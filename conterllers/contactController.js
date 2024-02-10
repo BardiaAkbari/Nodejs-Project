@@ -1,11 +1,13 @@
 const asyncHnadler = require('express-async-handler');
+const Contact = require('../models/contactModel');
 
 //@desc get all contacts
 //@route GET /contacts
 //@acesses private
 
 const getContacts = asyncHnadler(async (req, res) => {
-    res.status(200).json({message: "All contacts"})
+    const contacts = await Contact.find();
+    res.status(200).json(contacts);
 });
 
 //@desc get specefic contact
@@ -22,16 +24,19 @@ const getContact = asyncHnadler(async (req, res) => {
 
 const createContact = asyncHnadler(async (req, res) => {
     const {name, email, phone} = req.body;
-    
+    console.log(req.body);
     if (name || email || phone){
-        NaN
+        const contact = await Contact.create({
+            name,
+            email,
+            phone
+        });
+        res.status(201).json(contact);
     }
     else{
         res.status(400);
         throw new Error("You must fill all the blanks");
     }
-    console.log(req.body);
-    res.status(201).json({message: `make new contact`});
 });
 
 //@desc delete specefic contact
