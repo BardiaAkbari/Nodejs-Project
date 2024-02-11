@@ -32,7 +32,7 @@ const getContact = asyncHnadler(async (req, res) => {
 const createContact = asyncHnadler(async (req, res) => {
     const {name, email, phone} = req.body;
     console.log(req.body);
-    if (name || email || phone){
+    if (name && email && phone){
         const contact = await Contact.create({
             name,
             email,
