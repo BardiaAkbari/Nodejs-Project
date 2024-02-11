@@ -79,7 +79,7 @@ const loginUser = asyncHnadler(async (req, res) => {
 
 const currentUser = asyncHnadler(async (req, res) => {
 
-    res.json({message: "current user info"});
+    res.json(req.user);
 });
 
 module.exports = {
