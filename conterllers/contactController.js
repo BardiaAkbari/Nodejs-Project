@@ -15,7 +15,14 @@ const getContacts = asyncHnadler(async (req, res) => {
 //@acesses private
 
 const getContact = asyncHnadler(async (req, res) => {
-    res.status(200).json({message: `contact with ${req.params.id} id`});
+    const contact = await Contact.findById(req.params.id);
+    if (contact){
+        res.status(200).json(contact);
+    }
+    else{
+        res.status(404);
+        throw new Error("Contact not found!")
+    }   
 });
 
 //@desc make new contact
@@ -44,7 +51,20 @@ const createContact = asyncHnadler(async (req, res) => {
 //@acesses private
 
 const editContact = asyncHnadler(async (req, res) => {
-    res.status(200).json({message: `edit contact with ${req.params.id} id`});
+    const contact = await Contact.findById(req.params.id);
+    if (contact){
+        const updatedContact = await Contact.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new : true }
+        );
+        res.status(200).json(updatedContact);
+    }
+    else{
+        res.status(404);
+        throw new Error("Contact not found!")
+    }
+
 });
 
 //@desc delete specefic contact
@@ -52,7 +72,17 @@ const editContact = asyncHnadler(async (req, res) => {
 //@acesses private
 
 const deleteContact = asyncHnadler(async (req, res) => {
-    res.status(200).json({message: `delete contact with ${req.params.id} id`});
+   
+    const contact = await Contact.findById(req.params.id);
+    
+    if (contact){
+        await Contact.deleteOne({ _id: req.params.id });
+        res.status(200).json(contact);
+    }
+    else{
+        res.status(404);
+        throw new Error("Contact not found!")
+    }
 });
 
 module.exports = {
